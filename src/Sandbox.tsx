@@ -7,7 +7,7 @@ export type SandboxProps = {
   autoReload?: boolean;
 }
 
-type SandboxLanguage = "javascript" | "html";
+export type SandboxLanguage = "javascript" | "html";
 
 type SandboxMessage = {
   type: "log";
@@ -45,7 +45,6 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
     } else {
       console.log(`[Sandbox] can't execute code, iframe not ready`)
     }
-
   }
 
   /**
@@ -157,7 +156,7 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
     // must prevent rerender of iframe
     // https://reactjs.org/docs/integrating-with-other-libraries.html#integrating-with-dom-manipulation-plugins
     return (
-      <Iframe hidden={hidden === undefined ? true : hidden} ref={(el: HTMLIFrameElement) => this.iframe = el} />
+      <Iframe hidden={hidden === undefined ? false : hidden} ref={(el: HTMLIFrameElement) => this.iframe = el} />
     )
   }
 }

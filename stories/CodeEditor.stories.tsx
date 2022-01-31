@@ -1,16 +1,19 @@
 // @ts-ignore
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Thing, Props } from '../src';
+import CodeEditor, { CodeEditorProps } from "../src/CodeEditor";
 
 const meta: Meta = {
-  title: 'Welcome',
-  component: Thing,
+  title: 'Code Editor',
+  component: CodeEditor,
   argTypes: {
-    children: {
+    code: {
       control: {
         type: 'text',
       },
+    },
+    language: {
+      options: ['javascript', 'html']
     },
   },
   parameters: {
@@ -20,10 +23,17 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<Props> = args => <Thing {...args} />;
+const Template: Story<CodeEditorProps> = args => {
+  return <CodeEditor {...args} />
+};
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
 export const Default = Template.bind({});
 
-Default.args = {};
+Default.args = {
+  language: "html",
+  autorun: true,
+  code: "<h1>Heading 1</h1>\n" +
+    "<p>Paragraph</p>"
+};
