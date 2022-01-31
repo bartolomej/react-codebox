@@ -1,5 +1,6 @@
 {
   "version": "0.1.1",
+  "description": "Fast and extensible code editor component for React.js ⚡️",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -12,6 +13,7 @@
     "node": ">=10"
   },
   "scripts": {
+    "publish": "np --no-2fa",
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",

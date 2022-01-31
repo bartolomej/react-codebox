@@ -2,7 +2,7 @@
     <img width="300" alt="Logo" src="./logo.png">
 </p>
 
-> NOTE: This library is still in development 🚧
+> NOTE: This library is still in development, the API may change in the future 🚧
 
 ## 👋 Get started
 
