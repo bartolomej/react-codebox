@@ -1,33 +1,33 @@
-import React, { useState, useEffect, useRef, FC } from "react";
-import AceEditor from "react-ace";
-import styled, { ThemeProvider } from 'styled-components'
+import React, { useState, useEffect, useRef, FC } from 'react';
+import AceEditor from 'react-ace';
+import styled, { ThemeProvider } from 'styled-components';
 import {
   AiOutlineFullscreen,
   AiOutlineFullscreenExit,
-} from "react-icons/ai";
-import { IoPlayOutline } from "react-icons/io5";
+} from 'react-icons/ai';
+import { IoPlayOutline } from 'react-icons/io5';
 
 // ace common
-import "ace-builds/src-noconflict/theme-xcode"
-import "ace-builds/src-min-noconflict/ext-searchbox";
-import "ace-builds/src-min-noconflict/ext-language_tools";
+import 'ace-builds/src-noconflict/theme-xcode';
+import 'ace-builds/src-min-noconflict/ext-searchbox';
+import 'ace-builds/src-min-noconflict/ext-language_tools';
 
 // ace language support
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-css"
-import "ace-builds/src-noconflict/mode-html"
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-css';
+import 'ace-builds/src-noconflict/mode-html';
 
 // ace language snippets
-import "ace-builds/src-noconflict/snippets/html"
-import "ace-builds/src-noconflict/snippets/css"
-import "ace-builds/src-noconflict/snippets/javascript"
+import 'ace-builds/src-noconflict/snippets/html';
+import 'ace-builds/src-noconflict/snippets/css';
+import 'ace-builds/src-noconflict/snippets/javascript';
 
 // prettier
-import prettier from "prettier/standalone";
-import parserHtml from "prettier/parser-html";
-import { Sandbox, SandboxLanguage } from "./Sandbox";
-import { CursorOptions } from "prettier";
-import { defaultTheme, ReactCodeEditorTheme } from "./theme";
+import prettier from 'prettier/standalone';
+import parserHtml from 'prettier/parser-html';
+import { Sandbox, SandboxLanguage } from './Sandbox';
+import { CursorOptions } from 'prettier';
+import { defaultTheme, ReactCodeEditorTheme } from './theme';
 
 export type ReactCodeEditorProps = {
   open?: boolean;
@@ -45,9 +45,9 @@ export type ReactCodeEditorProps = {
 
 const prettierOptions: CursorOptions = {
   cursorOffset: 0,
-  parser: "html",
-  plugins: [parserHtml]
-}
+  parser: 'html',
+  plugins: [parserHtml],
+};
 
 const CodeEditor: FC<ReactCodeEditorProps> = ({
   open = true,
@@ -60,17 +60,17 @@ const CodeEditor: FC<ReactCodeEditorProps> = ({
   fullscreen = false,
   autorun = false,
   websitePreview = true,
-  theme = defaultTheme
+  theme = defaultTheme,
 }) => {
   const [value, setValue] = useState(code);
   const [isFocused, setFocused] = useState(false);
   const [isFullscreen, setFullscreen] = useState(fullscreen);
-  const [syntaxError, setSyntaxError] = useState<null|Error>(null);
-  const sandboxRef = useRef<Sandbox|null>();
+  const [syntaxError, setSyntaxError] = useState<null | Error>(null);
+  const sandboxRef = useRef<Sandbox | null>();
 
   useEffect(() => {
     setValue(code);
-  }, [code])
+  }, [code]);
 
   useEffect(() => {
     if (sandboxRef.current && autorun) {
@@ -81,22 +81,22 @@ const CodeEditor: FC<ReactCodeEditorProps> = ({
       // TODO: don't update value with formatted code until cursor offset is not set
       setValue(value);
     }
-  }, [value])
+  }, [value]);
 
   useEffect(() => {
     setFullscreen(fullscreen);
-  }, [fullscreen])
+  }, [fullscreen]);
 
   useEffect(() => {
     if (!syntaxError && autorun) {
-      updateIframeContent()
+      updateIframeContent();
     }
-  }, [syntaxError])
+  }, [syntaxError]);
 
   useEffect(() => {
-    window.addEventListener("keydown", onKeyPress);
-    return () => window.removeEventListener("keydown", onKeyPress)
-  }, [])
+    window.addEventListener('keydown', onKeyPress);
+    return () => window.removeEventListener('keydown', onKeyPress);
+  }, []);
 
   function formatCode (code: string) {
     // execute formatting in worker if needed
@@ -106,7 +106,7 @@ const CodeEditor: FC<ReactCodeEditorProps> = ({
       // TODO: move cursor after formatting
       const {
         formatted,
-      } = prettier.formatWithCursor(code, prettierOptions)
+      } = prettier.formatWithCursor(code, prettierOptions);
       // reset error when code contains no syntax errors
       setSyntaxError(null);
       return formatted;
@@ -122,113 +122,125 @@ const CodeEditor: FC<ReactCodeEditorProps> = ({
     const codeLineRegex = /[ ]+[0-9]+ \|/;
     const errorLineRegex = />[ ]+[0-9]+/;
     const errorPointerLineRegex = /[ ]+\|[ ]+[^]+[.]*/;
-    return syntaxError && syntaxError.message.split("\n").map((line, i) => {
+    return syntaxError && syntaxError.message.split('\n').map((line, i) => {
       // check if syntax error is on current line
       if (errorLineRegex.test(line)) {
-        return <MarkedCodeFrameLine key={i}>{line}</MarkedCodeFrameLine>
+        return <MarkedCodeFrameLine key={i}>{line}</MarkedCodeFrameLine>;
       }
       if (codeLineRegex.test(line)) {
         return <CodeFrameLine key={i}>{line}</CodeFrameLine>;
       }
       if (errorPointerLineRegex.test(line)) {
-        return <PointerCodeFrameLine key={i}>{line}</PointerCodeFrameLine>
+        return <PointerCodeFrameLine key={i}>{line}</PointerCodeFrameLine>;
       }
-      return <SyntaxErrorMessage key={i}>{line}</SyntaxErrorMessage>
-    })
+      return <SyntaxErrorMessage key={i}>{line}</SyntaxErrorMessage>;
+    });
   }
 
   function onKeyPress (e: KeyboardEvent) {
-    if (e.key === "Escape") {
-      setFullscreen(false)
+    if (e.key === 'Escape') {
+      setFullscreen(false);
       if (open) {
-        onToggle(false)
+        onToggle(false);
       }
     }
   }
 
   function updateIframeContent () {
-    console.log(sandboxRef.current?.execute("Test"))
+    console.log(sandboxRef.current?.execute('Test'));
     sandboxRef.current?.execute(value);
   }
 
   const renderFullscreenToggle = () => isFullscreen ? (
-    <ControlButton data-splitbee-event="CodeEditor small" onClick={() => {
+    <ControlButton data-splitbee-event='CodeEditor small' onClick={() => {
       setFullscreen(false);
-      onToggle(false)
+      onToggle(false);
     }}>
-      <AiOutlineFullscreenExit size={15}/>
+      <AiOutlineFullscreenExit size={15} />
     </ControlButton>
   ) : (
-    <ControlButton data-splitbee-event="CodeEditor fullscreen" onClick={() => {
+    <ControlButton data-splitbee-event='CodeEditor fullscreen' onClick={() => {
       setFullscreen(true);
-      onToggle(true)
+      onToggle(true);
     }}>
-      <AiOutlineFullscreen size={15}/>
+      <AiOutlineFullscreen size={15} />
     </ControlButton>
-  )
+  );
 
   const renderRunButton = () => !autorun && !syntaxError && (
-    <ControlButton data-splitbee-event="CodeEditor run" onClick={() => {
-      updateIframeContent()
+    <ControlButton data-splitbee-event='CodeEditor run' onClick={() => {
+      updateIframeContent();
     }}>
-      <IoPlayOutline size={15}/>
+      <IoPlayOutline size={15} />
     </ControlButton>
-  )
+  );
 
   return (
     <ThemeProvider theme={theme}>
-    <OuterContainer zIndex={isFullscreen ? 1000 : zIndex} isOpen={open}
-                    fullscreen={isFullscreen}>
-      <Container focused={isFocused}
-                 style={{ height: isFullscreen ? '100%' : height, width }}>
-        <ControlsWrapper>
-          {renderRunButton()}
-          {renderFullscreenToggle()}
-        </ControlsWrapper>
-        <EditorSide>
-          <AceEditor
-            mode={language}
-            theme={theme.ideTheme}
-            fontSize={16}
-            height="100%"
-            width="unset"
-            editorProps={{ $blockScrolling: true }}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            onChange={setValue}
-            value={value}
-            showGutter={isFullscreen}
-            setOptions={{
-              useWorker: false,
-              displayIndentGuides: true,
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: true,
-              showLineNumbers: true,
-              tabSize: 2
-            }}
-          />
-        </EditorSide>
-        {syntaxError ? (
-          <PreviewSide>
-            <SyntaxErrorWrapper>
-              <SyntaxErrorTitle>POZOR NAPAKA V KODI!</SyntaxErrorTitle>
-              <pre>{renderCodeFrame()}</pre>
-            </SyntaxErrorWrapper>
-          </PreviewSide>
-        ) : (
-          websitePreview ? (
+      <OuterContainer
+        zIndex={isFullscreen ? 1000 : zIndex}
+        isOpen={open}
+        fullscreen={isFullscreen}
+      >
+        <Container
+          focused={isFocused}
+          style={{ height: isFullscreen ? '100%' : height, width }}
+        >
+          <ControlsWrapper>
+            {renderRunButton()}
+            {renderFullscreenToggle()}
+          </ControlsWrapper>
+          <EditorSide>
+            <AceEditor
+              mode={language}
+              theme={theme.ideTheme}
+              fontSize={16}
+              height='100%'
+              width='unset'
+              editorProps={{ $blockScrolling: true }}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              onChange={setValue}
+              value={value}
+              showGutter={isFullscreen}
+              setOptions={{
+                useWorker: false,
+                displayIndentGuides: true,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+            />
+          </EditorSide>
+          {syntaxError ? (
             <PreviewSide>
-              <Sandbox language={language} ref={el => sandboxRef.current = el} />
+              <SyntaxErrorWrapper>
+                <SyntaxErrorTitle>POZOR NAPAKA V KODI!</SyntaxErrorTitle>
+                <pre>{renderCodeFrame()}</pre>
+              </SyntaxErrorWrapper>
             </PreviewSide>
           ) : (
-            <Sandbox hidden language={language} ref={el => sandboxRef.current = el}/>
-          )
-        )}
-      </Container>
-    </OuterContainer>
+            websitePreview ? (
+              <PreviewSide>
+                <Sandbox
+                  language={language}
+                  ref={el => sandboxRef.current = el}
+                />
+              </PreviewSide>
+            ) : (
+              <Sandbox
+                hidden
+                language={language}
+                ref={el => sandboxRef.current = el}
+              />
+            )
+          )}
+        </Container>
+      </OuterContainer>
     </ThemeProvider>
-  )
-}
+  );
+};
 
 type OuterContainerProps = {
   zIndex: number;
@@ -281,13 +293,13 @@ const EditorSide = styled.div`
   flex: 1;
   resize: horizontal;
   border-right: 1px solid ${({ theme }) => theme.colors.light};
-`
+`;
 
 const PreviewSide = styled.div`
   flex: 1;
   background: white;
   max-width: 50%;
-`
+`;
 
 const SyntaxErrorWrapper = styled.div`
   padding: 5px;
@@ -320,4 +332,4 @@ const SyntaxErrorMessage = styled(CodeFrameLine)`
   margin-bottom: 5px;
 `;
 
-export default CodeEditor
+export default CodeEditor;

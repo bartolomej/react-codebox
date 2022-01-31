@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 export type SandboxProps = {
   hidden?: boolean;
@@ -7,11 +7,11 @@ export type SandboxProps = {
   autoReload?: boolean;
 }
 
-export type SandboxLanguage = "javascript" | "html";
+export type SandboxLanguage = 'javascript' | 'html';
 
 type SandboxMessage = {
-  type: "log";
-  logLevel?: "log" | "info" | "warn" | "error";
+  type: 'log';
+  logLevel?: 'log' | 'info' | 'warn' | 'error';
   arguments: any[];
 }
 
@@ -35,15 +35,15 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
    * Executes (renders) given html code in a sandbox environment.
    * @param code {string} - html document
    */
-  execute(code: string) {
+  execute (code: string) {
     if (this.iframe) {
-      const {contentWindow} = this.iframe;
+      const { contentWindow } = this.iframe;
       this.iframe.onload = () => this.writeContent(code);
       if (contentWindow) {
         contentWindow.location.reload(); // clean JS context (clear declared variables,..)
       }
     } else {
-      console.log(`[Sandbox] can't execute code, iframe not ready`)
+      console.log(`[Sandbox] can't execute code, iframe not ready`);
     }
   }
 
@@ -52,13 +52,13 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
    * @param code {string} - js code to execute
    * @returns {any} - value of the result
    */
-  eval(code: string) {
+  eval (code: string) {
     if (this.iframe) {
-      const {contentWindow} = this.iframe;
+      const { contentWindow } = this.iframe;
       // @ts-ignore
       return contentWindow.eval(code);
     } else {
-      console.log(`[Sandbox] can't eval code, iframe not ready`)
+      console.log(`[Sandbox] can't eval code, iframe not ready`);
     }
   }
 
@@ -68,7 +68,7 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
       if (response.data && response.data.source === 'iframe') {
         const payload = JSON.parse(response.data.message);
         switch (payload.type) {
-          case "log":
+          case 'log':
             return Sandbox.handleLogMessage(payload);
         }
       }
@@ -77,21 +77,21 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
 
   private static handleLogMessage (payload: SandboxMessage) {
     switch (payload.logLevel) {
-      case "warn":
-      case "error":
-      case "info":
-      case "log": {
+      case 'warn':
+      case 'error':
+      case 'info':
+      case 'log': {
         // TODO: handle logs
-        console.log("log: ", payload.arguments)
+        console.log('log: ', payload.arguments);
       }
     }
   }
 
-  writeContent(value: string) {
-    const {language} = this.props;
+  writeContent (value: string) {
+    const { language } = this.props;
 
     if (this.iframe && this.iframe.contentDocument) {
-      const {contentDocument} = this.iframe;
+      const { contentDocument } = this.iframe;
       contentDocument.open();
       contentDocument.write(this.internalScripts());
       contentDocument.write(this.formatContent(value, language));
@@ -101,8 +101,8 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
 
   formatContent (value: string, language?: SandboxLanguage) {
     switch (language) {
-      case "javascript":
-        return `<script>${value}</script>`
+      case 'javascript':
+        return `<script>${value}</script>`;
       default:
         return value;
     }
@@ -148,16 +148,19 @@ export class Sandbox extends React.Component<SandboxProps, {}, {}> {
         console.warn = emitLog("warn");
         console.info = emitLog("info");
       </script>
-    `
+    `;
   }
 
-  render() {
-    const {hidden} = this.props;
+  render () {
+    const { hidden } = this.props;
     // must prevent rerender of iframe
     // https://reactjs.org/docs/integrating-with-other-libraries.html#integrating-with-dom-manipulation-plugins
     return (
-      <Iframe hidden={hidden === undefined ? false : hidden} ref={(el: HTMLIFrameElement) => this.iframe = el} />
-    )
+      <Iframe
+        hidden={hidden === undefined ? false : hidden}
+        ref={(el: HTMLIFrameElement) => this.iframe = el}
+      />
+    );
   }
 }
 
