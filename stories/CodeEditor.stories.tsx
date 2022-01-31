@@ -1,7 +1,8 @@
 // @ts-ignore
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import CodeEditor, { CodeEditorProps } from "../src/CodeEditor";
+import CodeEditor, { ReactCodeEditorProps } from "../src/CodeEditor";
+import { defaultTheme } from "../src/theme";
 
 const meta: Meta = {
   title: 'Code Editor',
@@ -23,7 +24,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<CodeEditorProps> = args => {
+const Template: Story<ReactCodeEditorProps> = args => {
   return <CodeEditor {...args} />
 };
 
@@ -34,6 +35,7 @@ export const Default = Template.bind({});
 Default.args = {
   language: "html",
   autorun: true,
+  theme: defaultTheme,
   code: "<h1>Heading 1</h1>\n" +
     "<p>Paragraph</p>"
 };

@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="400" alt="Logo" src="./logo.png">
+    <img width="300" alt="Logo" src="./logo.png">
 </p>
 
 > NOTE: This library is still in development 🚧

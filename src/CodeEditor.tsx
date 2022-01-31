@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, FC } from "react";
 import AceEditor from "react-ace";
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import {
   AiOutlineFullscreen,
   AiOutlineFullscreenExit,
@@ -27,13 +27,14 @@ import prettier from "prettier/standalone";
 import parserHtml from "prettier/parser-html";
 import { Sandbox, SandboxLanguage } from "./Sandbox";
 import { CursorOptions } from "prettier";
+import { defaultTheme, ReactCodeEditorTheme } from "./theme";
 
-export type CodeEditorProps = {
+export type ReactCodeEditorProps = {
   open?: boolean;
   zIndex?: number;
   code: string;
   language?: SandboxLanguage;
-  theme?: "xcode";
+  theme?: ReactCodeEditorTheme;
   height?: string;
   width?: string;
   fullscreen?: boolean;
@@ -48,45 +49,18 @@ const prettierOptions: CursorOptions = {
   plugins: [parserHtml]
 }
 
-// TODO: refactor theme logic
-export const theme = {
-  colors: {
-    red: '#da2748',
-    primary: '#E76F51',
-    secondary: '#2A9D8F',
-    dark: '#264653',
-    lightDark: '#556d77',
-    light: '#F1F2EB',
-    white: '#FFFFFF',
-    html: "#e96228",
-    css: "#2862e9",
-    js: "#f7e017"
-  },
-  constants: {
-    smBorderRadius: '8px',
-    containerWidth: '700px',
-  },
-  gutter: {
-    sm: '5px',
-    med: '10px',
-  },
-  styles: {
-    boxShadow: (focused: boolean) => `-1px 1px ${focused ? '50px' : '30px'} -10px rgb(0 0 0 / 30%), 0 18px 36px -18px rgb(0 0 0 / 33%)`
-  }
-}
-
-const CodeEditor: FC<CodeEditorProps> = ({
+const CodeEditor: FC<ReactCodeEditorProps> = ({
   open = true,
   zIndex = 100,
   onToggle = () => null,
   code = '',
   language = 'html',
-  theme = 'xcode',
   height = '500px',
   width = '100%',
   fullscreen = false,
   autorun = false,
-  websitePreview = true
+  websitePreview = true,
+  theme = defaultTheme
 }) => {
   const [value, setValue] = useState(code);
   const [isFocused, setFocused] = useState(false);
@@ -202,6 +176,7 @@ const CodeEditor: FC<CodeEditorProps> = ({
   )
 
   return (
+    <ThemeProvider theme={theme}>
     <OuterContainer zIndex={isFullscreen ? 1000 : zIndex} isOpen={open}
                     fullscreen={isFullscreen}>
       <Container focused={isFocused}
@@ -213,7 +188,7 @@ const CodeEditor: FC<CodeEditorProps> = ({
         <EditorSide>
           <AceEditor
             mode={language}
-            theme={theme}
+            theme={theme.ideTheme}
             fontSize={16}
             height="100%"
             width="unset"
@@ -251,6 +226,7 @@ const CodeEditor: FC<CodeEditorProps> = ({
         )}
       </Container>
     </OuterContainer>
+    </ThemeProvider>
   )
 }
 
@@ -279,8 +255,8 @@ const Container = styled.div<ContainerProps>`
   border-radius: 8px;
   overflow: hidden;
   transition: 0.3s ease-in-out box-shadow;
-  box-shadow: ${({ focused }) => theme.styles.boxShadow(focused)};
-  border: 2px solid ${({}) => theme.colors.light}
+  box-shadow: ${({ theme, focused }) => theme.styles.boxShadow(focused)};
+  border: 2px solid ${({ theme }) => theme.colors.light}
 `;
 
 const ControlsWrapper = styled.div`
@@ -296,15 +272,15 @@ const ControlButton = styled.button`
   display: flex;
   background: white;
   padding: 3px;
-  border: 2px solid ${({}) => theme.colors.light};
-  border-radius: ${({}) => theme.constants.smBorderRadius};
-  margin-left: ${({}) => theme.gutter.sm};
+  border: 2px solid ${({ theme }) => theme.colors.light};
+  border-radius: ${({ theme }) => theme.constants.smBorderRadius};
+  margin-left: ${({ theme }) => theme.gutter.sm};
 `;
 
 const EditorSide = styled.div`
   flex: 1;
   resize: horizontal;
-  border-right: 1px solid ${({}) => theme.colors.light};
+  border-right: 1px solid ${({ theme }) => theme.colors.light};
 `
 
 const PreviewSide = styled.div`
@@ -321,20 +297,20 @@ const CodeFrameLine = styled.code`
   border: none;
   background: none;
   display: block;
-  color: ${({}) => theme.colors.lightDark}
+  color: ${({ theme }) => theme.colors.lightDark}
 `;
 
 const MarkedCodeFrameLine = styled(CodeFrameLine)`
-  background: ${({}) => theme.colors.red};
-  color: ${({}) => theme.colors.light};
+  background: ${({ theme }) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.light};
 `;
 
 const PointerCodeFrameLine = styled(CodeFrameLine)`
-  color: ${({}) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.red};
 `;
 
 const SyntaxErrorTitle = styled.b`
-  color: ${({}) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.red};
   padding: 5px;
 `;
 
