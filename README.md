@@ -8,15 +8,15 @@
 
 Install with npm or yarn:
 ```bash
-npm i react-web-coder
+npm i react-codefull
 ```
 
 Use in your React app:
 ```typescript jsx
-import { CodeEditor } from "react-web-coder";
+import { CodeEditor } from "react-codefull";
 
 export default () => (
   <CodeEditor />
 )
 ```
-Check out [react-web-coder.netlify.app](https://react-web-coder.netlify.app) for comprehensive documentation and example usage.
+Check out [react-codefull.netlify.app](https://react-codefull.netlify.app) for comprehensive documentation and example usage.

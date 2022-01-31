@@ -38,7 +38,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-web-coder",
+  "name": "react-codefull",
   "author": "Bartolomej Kozorog",
   "module": "dist/react-code-editor.esm.js",
   "size-limit": [
