@@ -1,6 +1,7 @@
 {
   "version": "0.1.0",
   "license": "MIT",
+  "private": false,
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -35,7 +36,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-code-editor",
+  "name": "react-web-coder",
   "author": "Bartolomej Kozorog",
   "module": "dist/react-code-editor.esm.js",
   "size-limit": [
