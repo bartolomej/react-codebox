@@ -1,4 +1,4 @@
-export type ReactCodeEditorTheme = {
+export type CodeEditorTheme = {
   ideTheme?: string;
   colors: any;
   constants: {
@@ -14,7 +14,7 @@ export type ReactCodeEditorTheme = {
   }
 }
 
-export const defaultTheme: ReactCodeEditorTheme = {
+export const defaultTheme: CodeEditorTheme = {
   ideTheme: "xcode",
   colors: {
     red: '#da2748',

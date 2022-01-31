@@ -27,14 +27,14 @@ import prettier from 'prettier/standalone';
 import parserHtml from 'prettier/parser-html';
 import { Sandbox, SandboxLanguage } from './Sandbox';
 import { CursorOptions } from 'prettier';
-import { defaultTheme, ReactCodeEditorTheme } from './theme';
+import { defaultTheme, CodeEditorTheme } from './theme';
 
-export type ReactCodeEditorProps = {
+export type CodeEditorProps = {
   open?: boolean;
   zIndex?: number;
-  code: string;
+  code?: string;
   language?: SandboxLanguage;
-  theme?: ReactCodeEditorTheme;
+  theme?: CodeEditorTheme;
   height?: string;
   width?: string;
   fullscreen?: boolean;
@@ -49,7 +49,7 @@ const prettierOptions: CursorOptions = {
   plugins: [parserHtml],
 };
 
-const CodeEditor: FC<ReactCodeEditorProps> = ({
+export const CodeEditor: FC<CodeEditorProps> = ({
   open = true,
   zIndex = 100,
   onToggle = () => null,
@@ -331,5 +331,3 @@ const SyntaxErrorMessage = styled(CodeFrameLine)`
   line-height: 1.4;
   margin-bottom: 5px;
 `;
-
-export default CodeEditor;

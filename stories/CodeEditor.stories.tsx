@@ -1,8 +1,7 @@
 // @ts-ignore
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import CodeEditor, { ReactCodeEditorProps } from "../src/CodeEditor";
-import { defaultTheme } from "../src/theme";
+import { CodeEditor, CodeEditorProps, defaultTheme } from '../src';
 
 const meta: Meta = {
   title: 'Code Editor',
@@ -14,7 +13,7 @@ const meta: Meta = {
       },
     },
     language: {
-      options: ['javascript', 'html']
+      options: ['javascript', 'html'],
     },
   },
   parameters: {
@@ -24,8 +23,8 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<ReactCodeEditorProps> = args => {
-  return <CodeEditor {...args} />
+const Template: Story<CodeEditorProps> = args => {
+  return <CodeEditor {...args} />;
 };
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
@@ -33,9 +32,9 @@ const Template: Story<ReactCodeEditorProps> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  language: "html",
+  language: 'html',
   autorun: true,
   theme: defaultTheme,
-  code: "<h1>Heading 1</h1>\n" +
-    "<p>Paragraph</p>"
+  code: '<h1>Heading 1</h1>\n' +
+    '<p>Paragraph</p>',
 };
