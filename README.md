@@ -1,8 +1,6 @@
 <p align="center">
-    <img width="300" alt="Logo" src="./logo.png">
+    <img width="300" alt="Logo" src="https://github.com/bartolomej/react-codefull/raw/main/logo.png">
 </p>
-
-> NOTE: This library is still in development, the API may change in the future 🚧
 
 ## 👋 Get started
 
