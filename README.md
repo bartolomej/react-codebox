@@ -16,7 +16,11 @@ Use in your React app:
 import { CodeEditor } from "react-codefull";
 
 export default () => (
-  <CodeEditor />
+  <CodeEditor
+     language="html"
+     autorun={true}
+     code="<h1>Heading 1</h1>"
+  />
 )
 ```
 Check out [react-codefull.netlify.app](https://react-codefull.netlify.app) for comprehensive documentation and example usage.
